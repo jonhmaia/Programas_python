@@ -28,7 +28,7 @@ class ArvoreBinaria:
     def buscar(self, valor):
         return self._buscar_recursivamente(self.raiz, valor)
 
-    def _buscar_recursivamente(self, no, valor):
+    def _buscar_recursivamente(self, no, valor): 
         if no is None:
             return False
         if no.valor == valor:
