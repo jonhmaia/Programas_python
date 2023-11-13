@@ -4,8 +4,14 @@ using namespace std;
 struct Node
 {
     int data;
-    Node *left;
-    Node *right;
+    // int defesa;
+    // int atk;
+    // bool magic;
+    // String name;
+    // String type;
+    // String description;
+    Node *left; //defesa
+    Node *right;//atk
 };
 
 // Função para criar um novo nó
@@ -122,6 +128,7 @@ void postorder(Node *root)
 // Função principal
 int main()
 {
+    //implementar um menu para o usuário escolher as opções
     Node *root = NULL;
     root = insert(root, 50);
     insert(root, 30);
