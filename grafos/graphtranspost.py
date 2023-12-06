@@ -1,5 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+
 # Função DFS
 def dfs(grafo, vertice, visitados, tempos):
     print(f"Visitando {vertice} - Tempo Inicial: {tempos['tempo']}")
@@ -14,29 +15,6 @@ def dfs(grafo, vertice, visitados, tempos):
     tempos['finalizacao'][vertice] = tempos['tempo']
     tempos['tempo'] += 1
     print(f"Finalizando {vertice} - Tempo Final: {tempos['tempo']}")
-# Função DFS para o algoritmo de Tarjan
-def dfs_tarjan(grafo, v, index, lowlink, stack, on_stack, components):
-    index[v] = len(index)
-    lowlink[v] = index[v]
-    stack.append(v)
-    on_stack.add(v)
-
-    for neighbor in grafo.neighbors(v):
-        if neighbor not in index:
-            dfs_tarjan(grafo, neighbor, index, lowlink, stack, on_stack, components)
-            lowlink[v] = min(lowlink[v], lowlink[neighbor])
-        elif neighbor in on_stack:
-            lowlink[v] = min(lowlink[v], index[neighbor])
-
-    if lowlink[v] == index[v]:
-        component = []
-        while True:
-            w = stack.pop()
-            on_stack.remove(w)
-            component.append(w)
-            if w == v:
-                break
-        components.append(component)
 
 # Carregar o grafo a partir do arquivo GraphML
 caminho_arquivo = 'grafos/Grafo-Trabalho4.graphml'
@@ -66,25 +44,25 @@ plt.subplot(122)
 plt.title('Grafo Transposto')
 pos_transposto = nx.spring_layout(grafo_transposto)
 nx.draw(grafo_transposto, pos_transposto, with_labels=True, font_weight='bold')
+
+# Inicializar tempos para o grafo transposto
+tempos_dfs_transposto = {'descoberta': {}, 'finalizacao': {}, 'tempo': 1}
+
+# Escolher um vértice inicial que exista no grafo transposto
+vertice_inicial_dfs_transposto = list(grafo_transposto.nodes)[0]
+
+# Executar DFS no grafo transposto
+visitados_dfs_transposto = set()
+dfs(grafo_transposto, vertice_inicial_dfs_transposto, visitados_dfs_transposto, tempos_dfs_transposto)
+
 plt.show()
 
 # Exibir tempos para o grafo original
 print("\nTempos de execução para o grafo original:")
 print("Tempos de descoberta:", tempos_dfs_original['descoberta'])
 print("Tempos de finalização:", tempos_dfs_original['finalizacao'])
-
-# Aplicar o algoritmo de Tarjan no grafo original
-index_tarjan = {}
-lowlink_tarjan = {}
-stack_tarjan = []
-on_stack_tarjan = set()
-components_tarjan = []
-
-for node in grafo.nodes:
-    if node not in index_tarjan:
-        dfs_tarjan(grafo, node, index_tarjan, lowlink_tarjan, stack_tarjan, on_stack_tarjan, components_tarjan)
-
-# Exibir componentes fortemente conectados
-print("\nComponentes fortemente conectados (Tarjan):")
-for component in components_tarjan:
-    print(component)
+print("################\n################")
+# Exibir tempos para o grafo transposto
+print("\nTempos de execução para o grafo transposto:")
+print("Tempos de descoberta:", tempos_dfs_transposto['descoberta'])
+print("Tempos de finalização:", tempos_dfs_transposto['finalizacao'])

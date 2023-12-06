@@ -1,6 +1,5 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-# Função DFS
 def dfs(grafo, vertice, visitados, tempos):
     print(f"Visitando {vertice} - Tempo Inicial: {tempos['tempo']}")
     visitados.add(vertice)
@@ -84,7 +83,16 @@ for node in grafo.nodes:
     if node not in index_tarjan:
         dfs_tarjan(grafo, node, index_tarjan, lowlink_tarjan, stack_tarjan, on_stack_tarjan, components_tarjan)
 
-# Exibir componentes fortemente conectados
-print("\nComponentes fortemente conectados (Tarjan):")
+# Criar grafo dos componentes fortemente conectados
+grafo_scc = nx.DiGraph()
 for component in components_tarjan:
-    print(component)
+    if len(component) > 1:
+        for i in range(len(component) - 1):
+            grafo_scc.add_edge(component[i], component[i + 1])
+
+# Mostrar o grafo dos componentes fortemente conectados
+plt.figure(figsize=(6, 6))
+plt.title('Grafo dos Componentes Fortemente Conectados')
+pos_scc = nx.spring_layout(grafo_scc)
+nx.draw(grafo_scc, pos_scc, with_labels=True, font_weight='bold')
+plt.show()
